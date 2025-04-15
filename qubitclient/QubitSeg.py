@@ -9,7 +9,7 @@
 
 import logging
 
-from qubitclient.utils.request_tool import request
+from qubitclient.utils.request_tool import file_request
 from qubitclient.utils.result_parser import parser_result
 
 
@@ -21,7 +21,7 @@ class QubitSegClient(object):
         self.url = url
         self.api_key = api_key
     def request(self, file_path_list):
-        response = request(file_path_list=file_path_list,url=self.url,api_key=self.api_key)
+        response = file_request(file_path_list=file_path_list,url=self.url,api_key=self.api_key)
         return response
     def parser_result_with_image(self,response,images):
         if response.status_code == 200:

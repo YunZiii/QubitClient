@@ -16,7 +16,7 @@ from qubitclient.QubitSeg import QubitSegClient
 
 def send_npz_to_server(url, api_key):
 
-    dir_path = "data/1829"
+    dir_path = "data/33137"
     # get all file in dir
     file_names = os.listdir(dir_path)
     
@@ -33,7 +33,7 @@ def send_npz_to_server(url, api_key):
 
     result_images = client.parser_result_with_image(response=response, images=images)
     for i, image in enumerate(result_images):
-        cv2.imwrite(f"tmp/client/result_{i}.jpg", image)
+        cv2.imwrite(f"./tmp/client/result_{i}.jpg", image)
 
 def main():
     from config import API_URL, API_KEY

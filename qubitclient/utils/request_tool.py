@@ -10,7 +10,7 @@ import os
 import requests
 
 
-def request(file_path_list,url,api_key):
+def file_request(file_path_list,url,api_key):
     files = []
     for file_path in file_path_list:
         if file_path.endswith('.npz'):
@@ -18,3 +18,4 @@ def request(file_path_list,url,api_key):
             files.append(("request", (file_name, open(file_path, "rb"), "image/jpeg")))
     headers = {'Authorization': f'Bearer {api_key}'}  # 添加API密钥到请求头
     response = requests.post(url, files=files, headers=headers)
+    return response
