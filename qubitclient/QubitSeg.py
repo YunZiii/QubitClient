@@ -54,6 +54,6 @@ class QubitSegClient(object):
             logging.error("Error: %s %s", response.status_code, response.text)
             return []
     
-    def convert_axis(self,points,x_dim,y_dim):
+    def convert_axis(self,points:list[float,float],x_dim:np.ndarray,y_dim:np.ndarray):
         return convet_axis(points=points,x_dim=x_dim,y_dim=y_dim)
     

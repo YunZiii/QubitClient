@@ -49,7 +49,7 @@ res格式为：
 [
     {
         "params_list":List[List[float]],//每条线段的多项式参数列表
-        "linepoints_list":List[List[[col,row]]],//每条线段的点坐标列表
+        "linepoints_list":List[List[[row_index,col_index]]],//每条线段的点坐标列表
         "confidence_list":List[float],//每条线段的置信度
     },//每一个npz文件的结果
     {
@@ -58,3 +58,13 @@ res格式为：
     ...
 ]
 ```
+
+### 坐标映射
+```python
+points = result[0]["linepoints_list"][0]
+reflection_points = client.convert_axis(points, bias,frequency)
+```
+`points`格式:`List[[row_index,col_index],...]`,表示单条线段的点坐标.<br>
+`bias`格式:`np.ndarray shape(A)`，与上述bias相同.<br>
+`frequency`格式:`np.ndarray shape(B)`，与上述frequency相同.<br>
+
