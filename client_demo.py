@@ -75,7 +75,11 @@ def send_npz_to_server(url, api_key):
     plt.ylabel("Frequency (GHz)")
     plt.legend()
     plt.show()
-    plt.savefig(f"./tmp/client/result.png")
+    save_path = "./tmp/client/result.png"
+    save_dir = os.path.dirname(save_path)
+    if not os.path.exists(save_dir):
+        os.makedirs(save_dir)
+    plt.savefig(save_path)
 
 
     pass
