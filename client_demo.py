@@ -61,15 +61,21 @@ def send_npz_to_server(url, api_key):
         
     frequency = dict_list[0]["frequency"] # 750
     bias = dict_list[0]["bias"] # 42
-    reflection_points = client.convert_axis(result[0]["linepoints_list"][0], bias,frequency)
+    reflection_points_lst = []
+    for i in range(len(result[0]["linepoints_list"])):
+        reflection_points = client.convert_axis(result[0]["linepoints_list"][i], bias,frequency)
+        reflection_points_lst.append(reflection_points)
 
     plt.figure(figsize=(10, 6))
     plt.pcolormesh(dict_list[0]["bias"], dict_list[0]["frequency"],  dict_list[0]["iq_avg"], shading='auto', cmap='viridis')
     plt.colorbar(label='IQ Average')  # 添加颜色条
-    reflection_points = np.array(reflection_points)
-    xy_x = reflection_points[:, 0]  # 提取 x 坐标
-    xy_y = reflection_points[:, 1]  # 提取 y 坐标
-    plt.scatter(xy_x, xy_y, color='blue', label='XY Points', s=5, alpha=0.1)  # 绘制散点图
+    colors = plt.cm.tab20(np.linspace(0, 1, len(result[0]["linepoints_list"])))
+    for i in range(len(reflection_points_lst)):
+        reflection_points = reflection_points_lst[i]
+        reflection_points = np.array(reflection_points)
+        xy_x = reflection_points[:, 0]  # 提取 x 坐标
+        xy_y = reflection_points[:, 1]  # 提取 y 坐标
+        plt.scatter(xy_x, xy_y, color=colors[i], label=f'XY Points{i}-conf:{result[0]["confidence_list"][i]}', s=5, alpha=0.1)  # 绘制散点图
     # 图形设置
     plt.title(f"File: {file_name}")
     plt.xlabel("Bias")
