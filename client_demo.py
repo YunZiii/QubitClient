@@ -51,31 +51,35 @@ def send_npz_to_server(url, api_key):
     # for i, image in enumerate(result_images):
     #     cv2.imwrite(f"./tmp/client/result_{i}.jpg", image)
 
-    result = client.get_result(response=response)
-    print(result[0]["params_list"])
-    print(result[0]["linepoints_list"])
-    print(result[0]["confidence_list"])
+    results = client.get_result(response=response)
+
+
+    index = 0
+    result = results[index]
+    print(result["params_list"])
+    print(result["linepoints_list"])
+    print(result["confidence_list"])
     
     
     # 增加结果坐标映射
         
-    frequency = dict_list[0]["frequency"] # 750
-    bias = dict_list[0]["bias"] # 42
+    frequency = dict_list[index]["frequency"] # 750
+    bias = dict_list[index]["bias"] # 42
     reflection_points_lst = []
-    for i in range(len(result[0]["linepoints_list"])):
-        reflection_points = client.convert_axis(result[0]["linepoints_list"][i], bias,frequency)
+    for i in range(len(result["linepoints_list"])):
+        reflection_points = client.convert_axis(result["linepoints_list"][i], bias,frequency)
         reflection_points_lst.append(reflection_points)
 
     plt.figure(figsize=(10, 6))
-    plt.pcolormesh(dict_list[0]["bias"], dict_list[0]["frequency"],  dict_list[0]["iq_avg"], shading='auto', cmap='viridis')
+    plt.pcolormesh(dict_list[index]["bias"], dict_list[index]["frequency"],  dict_list[index]["iq_avg"], shading='auto', cmap='viridis')
     plt.colorbar(label='IQ Average')  # 添加颜色条
-    colors = plt.cm.rainbow(np.linspace(0, 1, len(result[0]["linepoints_list"])))
+    colors = plt.cm.rainbow(np.linspace(0, 1, len(result["linepoints_list"])))
     for i in range(len(reflection_points_lst)):
         reflection_points = reflection_points_lst[i]
         reflection_points = np.array(reflection_points)
         xy_x = reflection_points[:, 0]  # 提取 x 坐标
         xy_y = reflection_points[:, 1]  # 提取 y 坐标
-        plt.scatter(xy_x, xy_y, color=colors[i], label=f'XY Points{i}-conf:{round(result[0]["confidence_list"][i],2)}', s=5, alpha=0.1)  # 绘制散点图
+        plt.scatter(xy_x, xy_y, color=colors[i], label=f'XY Points{i}-conf:{round(result["confidence_list"][i],2)}', s=5, alpha=0.1)  # 绘制散点图
     # 图形设置
     plt.title(f"File: {file_name}")
     plt.xlabel("Bias")
