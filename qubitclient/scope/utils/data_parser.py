@@ -12,7 +12,9 @@ import numpy as np
 import cv2
 
 
-def load_npz_file(file_path):
-    with np.load(file_path, allow_pickle=True) as data:
-        content = dict(data)
-    return content
+def load_npy_file(file_path):
+    try:
+        array = np.load(file_path, allow_pickle=True)
+        return array
+    except Exception as e:
+        raise ValueError(f"加载文件 {file_path} 时出错: {str(e)}")

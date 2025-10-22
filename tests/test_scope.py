@@ -19,11 +19,11 @@ if project_root not in sys.path:
 from qubitclient import QubitScopeClient
 from qubitclient import TaskName
 
-from qubitclient.scope.utils.data_parser import load_npz_file
+from qubitclient.scope.utils.data_parser import load_npy_file
 
 
 
-def send_npz_to_server(url, api_key,dir_path = "data/33137"):
+def send_npy_to_server(url, api_key,dir_path = "data/33137"):
 
     # get all file in dir
     file_names = os.listdir(dir_path)
@@ -36,12 +36,12 @@ def send_npz_to_server(url, api_key,dir_path = "data/33137"):
     if len(file_path_list)==0:
         return
     
-    client = QubitScopeClient(url="http://192.168.101.123:9000",api_key="")
+    client = QubitScopeClient(url=url,api_key="")
 
     dict_list = []
-    # for file_path in file_path_list:
-    #     content = load_npz_file(file_path)
-    #     dict_list.append(content)    
+    for file_path in file_path_list:
+        content = load_npy_file(file_path)
+        dict_list.append(content)    
     #使用从文件路径加载后的对象，格式为dict[str,np.ndarray]，多个组合成list
     # response = client.request(file_list=dict_list)
     
@@ -65,7 +65,7 @@ def main():
     from config import API_URL, API_KEY
 
     base_dir = "/home/sunyaqiang/work/QubitScope/source/common_peak/test/data"
-    send_npz_to_server(API_URL, API_KEY, base_dir)
+    send_npy_to_server(API_URL, API_KEY, base_dir)
 
 
 if __name__ == "__main__":
