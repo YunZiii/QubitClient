@@ -21,7 +21,13 @@ from qubitclient import CurveType
 
 def send_spectrum_npy_to_server(url, api_key):
     file_path = "tmp/npyfile/tmp0ffc025b.py_4905.npy"
+    # Method 1. load from file_path
     dict_list, name_list = convert_spectrum_npy2npz(file_path)
+    # Method 2. data has been loaded, converted from dict 
+    data = np.load(file_path, allow_pickle=True)
+    data = data.item() if isinstance(data, np.ndarray) else data
+    dict_list, name_list = convert_spectrum_dict2npz(data)
+
 
     client = QubitSegClient(url=url, api_key=api_key,curve_type=CurveType.COSINE)
 

@@ -70,10 +70,7 @@ def load_npz_to_image(file_path):
     image = convert_data_to_image(npz_content)
     return image
 
-def convert_spectrum_npy2npz(npy_file_path=None,npy_object=None):
-    if npy_object is not None:
-        npy_file_path = "tmp/npyfile/tmp0ffc025b.py_4905.npy"
-        np.save(npy_file_path, npy_object)
+def convert_spectrum_npy2npz(npy_file_path:str):
     data = np.load(npy_file_path, allow_pickle=True)
     data = data.item() if isinstance(data, np.ndarray) else data
     dict_list, name_list = convert_spectrum_dict2npz(data)
