@@ -20,6 +20,7 @@ from qubitclient import QubitNNScopeClient
 from qubitclient import NNTaskName
 
 from qubitclient.scope.utils.data_parser import load_npy_file
+from qubitclient.nnscope.nnscope_api.curve.curve_type import CurveType
 
 
 
@@ -30,7 +31,7 @@ def send_npy_to_server(url, api_key,dir_path = "data/33137"):
     
     file_path_list = []
     for file_name in file_names:
-        if file_name.endswith('.npy'):
+        if file_name.endswith('.npy') or file_name.endswith('.npz'):
             file_path = os.path.join(dir_path, file_name)
             file_path_list.append(file_path)
     if len(file_path_list)==0:
@@ -44,7 +45,8 @@ def send_npy_to_server(url, api_key,dir_path = "data/33137"):
         dict_list.append(content)    
     
     #使用从文件路径加载后的对象，格式为np.ndarray，多个组合成list
-    response = client.request(file_list=dict_list,task_type=NNTaskName.SPECTRUM2D,curve_type="cosin")
+    # response = client.request(file_list=dict_list,task_type=NNTaskName.SPECTRUM2D,curve_type="cosin")
+    response = client.request(file_list=file_path_list,task_type=NNTaskName.SPECTRUM2D,curve_type=CurveType.COSINE)
     print(response)
     
     # load data from path
@@ -58,7 +60,7 @@ def send_npy_to_server(url, api_key,dir_path = "data/33137"):
 def main():
     from config import API_URL, API_KEY
 
-    base_dir = "/home/sunyaqiang/work/QubitScope/source/opt_pipulse/test/data/"
+    base_dir = "data/1829"
     send_npy_to_server(API_URL, API_KEY, base_dir)
 
 

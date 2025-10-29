@@ -7,14 +7,14 @@ import numpy as np
 
 
 # load from npz file path
-def load_from_ndarray_path(file_path_list:list[str],url,api_key,curve_type:str=None):
+def load_from_ndarray_path(file_path_list:list[str]):
     files = []
     for file_path in file_path_list:
         if file_path.endswith('.npz'):
             file_name = os.path.basename(file_path)
             files.append(("request", (file_name, open(file_path, "rb"), "image/jpeg")))
     return files
-def load_from_dict(dict_list:list[dict],url,api_key,curve_type:str=None):
+def load_from_dict(dict_list:list[dict]):
     files = []
     for index,dict_obj in enumerate(dict_list):
         with io.BytesIO() as buffer:
@@ -45,14 +45,14 @@ def task_register(func):
     DEFINED_TASKS[func.__name__.lower()] = func
     return func
 
-def run_task(client,file_list: list[str|dict[str,np.ndarray]|np.ndarray],task_type:str,*args,**kwargs):
+def run_task(file_list: list[str|dict[str,np.ndarray]|np.ndarray],url,api_key,task_type:str,*args,**kwargs):
     files = load_files(file_list)
-    response = DEFINED_TASKS[task_type.value](client,files,*args,**kwargs)
+    response = DEFINED_TASKS[task_type.value](files,url,api_key,*args,**kwargs)
     return response
 
 
 @task_register
-def test(client,files):
+def test(files):
     
     return "hello"
 
