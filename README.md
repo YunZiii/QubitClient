@@ -14,6 +14,10 @@ QubitClient 是用于使用Qubit服务的示例。
 
 
 # 使用
+## 安装
+```bash
+pip install qubitclient
+```
 
 ### scope功能包
 
