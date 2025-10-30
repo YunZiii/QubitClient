@@ -140,9 +140,10 @@ def plot_result_npy(results,data_ndarray):
     dict_list = []
     q_list = data_dict.keys()
 
-    npz_dict={}
+
 
     for idx, q_name in enumerate(q_list):
+        npz_dict = {}
         image_q = data_dict[q_name]
         data = image_q[0]
         if data.ndim != 2:
@@ -153,6 +154,7 @@ def plot_result_npy(results,data_ndarray):
         npz_dict['bias'] = image_q[1]
         npz_dict['frequency'] = image_q[2]
         npz_dict['iq_avg'] = data
+        npz_dict['name'] = q_name
         dict_list.append(npz_dict)
 
     for index in range(nums):
@@ -176,6 +178,9 @@ def plot_result_npy(results,data_ndarray):
             xy_y = reflection_points[:, 1]  # 提取 y 坐标
             plt.scatter(xy_x, xy_y, color=colors[i], label=f'XY Points{i}-conf:{round(result["confidence_list"][i],2)}', s=5, alpha=0.1)  # 绘制散点图
         # 图形设置
+        file_name = dict_list[index]["name"]
+        plt.title(f"File: {file_name}")
+
         plt.xlabel("Bias")
         plt.ylabel("Frequency (GHz)")
         plt.legend()
