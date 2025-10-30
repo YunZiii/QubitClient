@@ -57,8 +57,7 @@ def test(files):
     return "hello"
 
 @task_register
-def spectrum2d(filepath_list,url,api_key,curve_type):
-    files = load_files(filepath_list)
+def spectrum2d(files,url,api_key,curve_type):
     spectrum2d_url = url + "/seglines"
     response = request_task(files,spectrum2d_url,api_key,curve_type)
     return response
