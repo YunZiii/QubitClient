@@ -19,12 +19,12 @@ if project_root not in sys.path:
 from qubitclient import QubitNNScopeClient
 from qubitclient import NNTaskName
 
-from qubitclient.scope.utils.data_parser import load_npy_file
+from qubitclient.nnscope.utils.data_parser import load_npz_file
 from qubitclient.nnscope.nnscope_api.curve.curve_type import CurveType
 
 
 
-def send_npy_to_server(url, api_key,dir_path = "data/33137"):
+def send_npz_to_server(url, api_key,dir_path = "data/33137"):
 
     # get all file in dir
     file_names = os.listdir(dir_path)
@@ -41,12 +41,12 @@ def send_npy_to_server(url, api_key,dir_path = "data/33137"):
 
     dict_list = []
     for file_path in file_path_list:
-        content = load_npy_file(file_path)
+        content = load_npz_file(file_path)
         dict_list.append(content)    
     
     #使用从文件路径加载后的对象，格式为np.ndarray，多个组合成list
-    # response = client.request(file_list=dict_list,task_type=NNTaskName.SPECTRUM2D,curve_type="cosin")
-    response = client.request(file_list=file_path_list,task_type=NNTaskName.SPECTRUM2D,curve_type=CurveType.COSINE)
+    response = client.request(file_list=dict_list,task_type=NNTaskName.SPECTRUM2D,curve_type=CurveType.COSINE)
+    # response = client.request(file_list=file_path_list,task_type=NNTaskName.SPECTRUM2D,curve_type=CurveType.COSINE)
     results = client.get_result(response=response)
     print(results)
     
@@ -62,7 +62,7 @@ def main():
     from config import API_URL, API_KEY
 
     base_dir = "data/1829"
-    send_npy_to_server(API_URL, API_KEY, base_dir)
+    send_npz_to_server(API_URL, API_KEY, base_dir)
 
 
 
