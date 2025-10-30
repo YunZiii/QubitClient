@@ -6,15 +6,28 @@ import io
 import numpy as np
 
 
+from qubitclient.nnscope.utils.data_convert import convert_spectrum_npy2npz,convert_spectrum_dict2npz
+
 # load from npz file path
-def load_from_ndarray_path(file_path_list:list[str]):
+def load_from_npz_path(file_path_list:list[str]):
     files = []
     for file_path in file_path_list:
         if file_path.endswith('.npz'):
             file_name = os.path.basename(file_path)
             files.append(("request", (file_name, open(file_path, "rb"), "image/jpeg")))
     return files
-def load_from_dict(dict_list:list[dict]):
+def load_from_npy_path(file_path_list:list[str]):
+    files = []
+    for file_path in file_path_list:
+        if file_path.endswith('.npy'):
+            dict_list, name_list = convert_spectrum_npy2npz(file_path)
+            for data_dict, filename in zip(dict_list, name_list):
+                with io.BytesIO() as buffer:
+                    np.savez(buffer, **data_dict)
+                    bytes_obj = buffer.getvalue()
+                files.append(("request", (filename, bytes_obj, "application/octet-stream")))
+    return files
+def load_from_npz_dict(dict_list:list[dict]):
     files = []
     for index,dict_obj in enumerate(dict_list):
         with io.BytesIO() as buffer:
@@ -34,11 +47,16 @@ def load_files(filepath_list: list[str|dict[str,np.ndarray]|np.ndarray]):
         return []
     else:
         if isinstance(filepath_list[0], dict):
-            return load_from_dict(filepath_list)
+            return load_from_npz_dict(filepath_list)
         # elif isinstance(filepath_list[0], np.ndarray):
         #     return load_from_ndarray(filepath_list)
         elif isinstance(filepath_list[0], str):
-            return load_from_ndarray_path(filepath_list)
+            if filepath_list[0].endswith('.npz'):
+                return load_from_npz_path(filepath_list)
+            elif filepath_list[0].endswith('.npy'):
+                return load_from_npy_path(filepath_list)
+            else:
+                return []
         
 DEFINED_TASKS = {}
 def task_register(func):
