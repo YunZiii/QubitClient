@@ -12,6 +12,12 @@ import os
 import sys
 import numpy as np
 import matplotlib.pyplot as plt  # 引入 matplotlib 绘图库
+
+
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+
+
 # 获取当前文件的绝对路径，向上两层就是项目根目录
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 if project_root not in sys.path:
@@ -70,7 +76,9 @@ def send_npy_to_server(url, api_key,file_path = "/home/sunyaqiang/work/QubitClie
     # 2.从文件路径直接加载
     # response = client.request(file_list=[file_path],task_type=NNTaskName.SPECTRUM2D,curve_type=CurveType.COSINE)
     results = client.get_result(response=response)
-    plot_result_npy(results,data_ndarray)
+    # plot_result_npy(results,data_ndarray)
+    plot_result_npy_plotly(results,data_ndarray)
+    
 
     print(results)
 
@@ -198,8 +206,7 @@ def plot_result_npy(results,data_ndarray):
     fig.savefig(save_path)
 
 def plot_result_npz_plotly(results, dict_list, file_names):
-    import plotly.graph_objects as go
-    from plotly.subplots import make_subplots
+
     nums = len(results)
     rows = (nums // 3) + 1 if nums % 3 != 0 else nums // 3
     cols = min(nums, 3)
@@ -291,19 +298,27 @@ def plot_result_npz_plotly(results, dict_list, file_names):
         title_standoff=8
     )
 
-    # 保存图片
-    save_path = "./tmp/client/result.png"
-    save_dir = os.path.dirname(save_path)
-    if not os.path.exists(save_dir):
-        os.makedirs(save_dir)
-    fig.write_image(save_path)
+
+    save_dir = "./tmp/client/"
+    # 保存图片    
+    # save_path = os.path.join(save_dir, "result.png")
+    # if not os.path.exists(save_dir):
+    #     os.makedirs(save_dir)
+    # fig.write_image(save_path)
+
+    html_save_path = os.path.join(save_dir, "result.html")
+    # 使用CDN加载Plotly.js，减小文件体积且保留交互性
+    fig.write_html(
+        html_save_path,
+        include_plotlyjs="cdn",  # 从CDN加载依赖，无需本地安装
+        full_html=True  # 生成完整可直接打开的HTML文件
+    )
 
 
 
 
 def plot_result_npy_plotly(results, data_ndarray):
-    import plotly.graph_objects as go
-    from plotly.subplots import make_subplots
+
     nums = len(results)
     rows = (nums // 3) + 1 if nums % 3 != 0 else nums // 3
     cols = min(nums, 3)
@@ -418,12 +433,20 @@ def plot_result_npy_plotly(results, data_ndarray):
         title_standoff=8
     )
 
-    # 保存图片
-    save_path = "./tmp/client/result.png"
-    save_dir = os.path.dirname(save_path)
-    if not os.path.exists(save_dir):
-        os.makedirs(save_dir)
-    fig.write_image(save_path)
+    save_dir = "./tmp/client/"
+    # 保存图片    
+    # save_path = os.path.join(save_dir, "result.png")
+    # if not os.path.exists(save_dir):
+    #     os.makedirs(save_dir)
+    # fig.write_image(save_path)
+
+    html_save_path = os.path.join(save_dir, "result.html")
+    # 使用CDN加载Plotly.js，减小文件体积且保留交互性
+    fig.write_html(
+        html_save_path,
+        include_plotlyjs="cdn",  # 从CDN加载依赖，无需本地安装
+        full_html=True  # 生成完整可直接打开的HTML文件
+    )
 
 
 
