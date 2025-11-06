@@ -205,4 +205,4 @@ res格式为：
 
 ## 许可证
 
-本项目采用GPL-3.0许可证，详见[LICENSE](file:///home/sunyaqiang/work/QubitClient/LICENSE)文件。
+本项目采用GPL-3.0许可证，详见[LICENSE](LICENSE)文件。
