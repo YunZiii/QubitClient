@@ -72,8 +72,9 @@
 ## 新任务的扩展开发‌
 
 添加新任务的绘图器‌
-对于新的任务如task:t1fit（所有task命名参考如下，通过task_type=NNTaskName.SPECTRUM2D.value指定）
+对于新的任务如task:t1fit（所有task命名参考如下，对于NNSCOPE的任务，通过task_type=NNTaskName.SPECTRUM2D.value指定，对于SCOPE的任务，通过task_type=TaskName.SPECTRUM2D.value指定）
 ```python
+    nnscope/task.py
     class NNTaskName(Enum):
     # S21PEAK = "s21peak"
     # OPTPIPULSE = "optpipulse"
@@ -85,6 +86,21 @@
     # T1FIT = "t1fit"
     # T2FIT = "t2fit"
     SPECTRUM2D = "spectrum2d"
+    
+    
+    scope/task.py
+    class TaskName(Enum):
+        S21PEAK = "s21peak"
+        OPTPIPULSE = "optpipulse"
+        RABI = "rabi"
+        RABICOS = "rabicos"
+        S21VFLUX = "s21vflux"
+        SINGLESHOT = "singleshot"
+        SPECTRUM = "spectrum"
+        T1FIT = "t1fit"
+        T2FIT = "t2fit"
+        SPECTRUM2D = "spectrum2d"
+        POWERSHIFT = "powershift"
 ```
 步骤如下： 
 1. 在t1fitplyplotter.py,创建新的绘图器类，继承QuantumDataPlyPlotter，
