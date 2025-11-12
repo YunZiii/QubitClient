@@ -13,6 +13,8 @@ class QuantumDataPltPlotter(ABC):
     def plot_result_npz(self, **kwargs):
         pass
 
-    def save_plot(self, fig, save_name: str = "result_",save_format: str = "png"):
-        save_path = "./tmp/client/"+save_name +"."+ save_format
+    def save_plot(self, fig, task_type: str,save_name: str,save_format: str = "png"):
+        if not os.path.exists("./tmp/client/"):
+            os.mkdir("./tmp/client/")
+        save_path = "./tmp/client/" + "result_" + task_type + "_" + save_name + "." + save_format
         fig.savefig(save_path)
