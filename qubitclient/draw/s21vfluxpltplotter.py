@@ -2,8 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from .pltplotter import QuantumDataPltPlotter
 
-from waveforms.math.fit import get_threshold_info
-from scipy.stats import norm
+
 
 class S21VfluxDataPltPlotter(QuantumDataPltPlotter):
     def __init__(self):

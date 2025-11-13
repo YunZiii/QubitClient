@@ -2,8 +2,7 @@ from .plyplotter import QuantumDataPlyPlotter
 import numpy as np
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
-from waveforms.math.fit import get_threshold_info
-from scipy.stats import norm
+
 
 class S21VfluxDataPlyPlotter(QuantumDataPlyPlotter):
 
