@@ -20,7 +20,7 @@ from qubitclient import TaskName
 
 from qubitclient.scope.utils.data_parser import load_npy_file
 from qubitclient.draw.pltmanager import QuantumPlotPltManager  # using matplotlib draw NPY/NPZ data
-#from qubitclient.draw.plymanager import QuantumPlotPlyManager  # using plotly draw NPY/NPZ data
+from qubitclient.draw.plymanager import QuantumPlotPlyManager  # using plotly draw NPY/NPZ data
 
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
@@ -61,7 +61,7 @@ def send_npy_to_server(url, api_key, dir_path="data/33137"):
     else:
         response_data = {}
     results = response_data.get("results")
-    #ply_plot_manager = QuantumPlotPlyManager()
+    ply_plot_manager = QuantumPlotPlyManager()
     plt_plot_manager = QuantumPlotPltManager()
     for idx, (result, item) in enumerate(zip(results, dict_list)):
 
@@ -77,6 +77,14 @@ def send_npy_to_server(url, api_key, dir_path="data/33137"):
                 data_type='npy',
                 task_type=TaskName.SPECTRUM.value,
                 save_format="png",
+                save_name=savenamelist[idx],
+                result=result,
+                dict=item
+            )
+            ply_plot_manager.plot_quantum_data(
+                data_type='npy',
+                task_type=TaskName.SPECTRUM.value,
+                save_format="html",
                 save_name=savenamelist[idx],
                 result=result,
                 dict=item
